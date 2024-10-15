@@ -1,62 +1,71 @@
 .game-list {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Trois colonnes */
-    gap: 20px; /* Espace entre les cartes */
+    grid-template-columns: repeat(3, 1fr); // Trois colonnes
+    gap: 20px; // Espace entre les cartes
     padding: 20px;
-    justify-content: center; /* Centrer les colonnes */
-    max-width: 1200px; /* Limiter la largeur totale pour garder la grille centrée */
-    margin: 0 auto; /* Centrer la grille horizontalement dans le conteneur */
+    max-width: 1200px; // Largeur totale maximale
+    margin: 0 auto; // Centrer la grille horizontalement
 }
 
 
+
 .game-card {
-    background-color: #333; /* Gris foncé */
+    background-color: #333; // Fond gris foncé
     color: #fff;
     border-radius: 8px;
     overflow: hidden;
-    transition: transform 0.3s;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); // Effet de profondeur
+    width: 100%; // Prendre toute la largeur de la colonne
 
     &:hover {
         transform: scale(1.05);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
     }
 
     .game-image {
         width: 100%;
-        height: 200px; /* Hauteur fixe pour toutes les images */
-        object-fit: cover;
+        height: 150px; // Hauteur fixe pour toutes les images
+        object-fit: cover; // Remplir l'espace tout en conservant les proportions
     }
 
     .game-details {
-        padding: 10px;
-        
-        .game-title, .game-platform, .game-rating {
-            margin: 5px 0;
-        }
-        
+        padding: 10px 15px; // Ajouter de l'espace à l'intérieur de la carte
+        text-align: left;
+
         .game-title {
-            font-size: 1.2em;
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #f1f1f1; // Couleur du titre légèrement plus claire
         }
-        
-        .game-platform, .game-rating {
+
+        .game-platform {
             font-size: 0.9em;
-            opacity: 0.7;
+            opacity: 0.8;
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap; // Permettre l'affichage sur plusieurs lignes si nécessaire
         }
     }
 }
 
+
 .show-more {
     display: block;
-    margin: 20px auto;
+    margin: 30px auto; // Centrer le bouton
     background-color: #e50914;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 12px 40px;
     cursor: pointer;
     font-size: 16px;
     border-radius: 5px;
-}
+    text-transform: uppercase;
+    letter-spacing: 1px;
 
-.show-more:hover {
-    background-color: #b10610;
+    &:hover {
+        background-color: #b10610;
+    }
 }
