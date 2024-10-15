@@ -2,10 +2,10 @@
     background-color: #1e1e1e; // Couleur de fond sombre
     border-radius: 10px;
     overflow: hidden;
-    display: grid;
+    display: grid; // Utilisation de la grille pour la mise en page
     grid-template-columns: auto; 
     position: relative;
-    transition: transform 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out; // Animation au survol
     cursor: pointer;
     width: 300px; // Ajuste cette largeur selon tes besoins
     margin: 15px;
@@ -16,52 +16,52 @@
 
     .game-image {
         img {
-            width: 100%;
+            width: 100%; // Image prend toute la largeur
             height: 180px; // Ajuster en fonction de la taille de l'image
-            object-fit: cover;
+            object-fit: cover; // Garde le ratio de l'image
         }
     }
 
     .game-info {
-        padding: 15px;
+        padding: 15px; // Espacement interne
         h3 {
-            color: #fff;
-            font-size: 1.5em;
-            margin-bottom: 10px;
+            color: #fff; // Couleur du titre
+            font-size: 1.5em; // Taille du texte
+            margin-bottom: 10px; // Espacement sous le titre
         }
 
         .platform-icons {
-            display: flex;
+            display: flex; // Utiliser flex pour l'alignement
             gap: 5px; // Espace entre les icônes
             margin-bottom: 15px;
 
             .platform-icon {
-                width: 25px;
-                height: 25px;
+                width: 25px; // Ajuster la taille des icônes
+                height: 25px; // Ajuster la taille des icônes
             }
         }
 
         .game-details {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9em;
-            color: #ccc;
+            display: flex; // Flex pour espacement
+            justify-content: space-between; // Espace entre les détails
+            font-size: 0.9em; // Taille du texte
+            color: #ccc; // Couleur du texte
         }
     }
 
     .filter-button {
-        position: absolute;
+        position: absolute; // Position absolue pour le bouton
         top: 10px;
         left: 10px;
 
         .red-button {
-            background-color: #ff0000;
-            color: #fff;
-            padding: 5px 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9em;
+            background-color: #ff0000; // Couleur rouge pour le bouton
+            color: #fff; // Couleur du texte
+            padding: 5px 10px; // Espacement interne
+            border: none; // Pas de bordure
+            border-radius: 5px; // Coins arrondis
+            cursor: pointer; // Curseur pointer
+            font-size: 0.9em; // Taille du texte
         }
     }
 }
