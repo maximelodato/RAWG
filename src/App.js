@@ -9,7 +9,8 @@ const App = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [error, setError] = useState(null);
   const [sortOption, setSortOption] = useState('name');
-  const [loading, setLoading] = useState(true); // État pour le chargement
+  const [loading, setLoading] = useState(true);
+  const [visibleCount, setVisibleCount] = useState(9);
 
   useEffect(() => {
     const getGames = async () => {
@@ -20,10 +21,9 @@ const App = () => {
       } catch (err) {
         setError(err.message);
       } finally {
-        setLoading(false); // Arrête le chargement une fois la récupération terminée
+        setLoading(false);
       }
     };
-
     getGames();
   }, []);
 
@@ -31,16 +31,9 @@ const App = () => {
     const filtered = games.filter(game =>
       game.name?.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
     const sortedGames = filtered.sort((a, b) => {
-      if (sortOption === 'name') {
-        return a.name.localeCompare(b.name);
-      } else if (sortOption === 'release') {
-        return new Date(b.released) - new Date(a.released);
-      }
-      return 0;
+      return sortOption === 'name' ? a.name.localeCompare(b.name) : new Date(b.released) - new Date(a.released);
     });
-
     setFilteredGames(sortedGames);
   }, [searchTerm, sortOption, games]);
 
@@ -52,7 +45,11 @@ const App = () => {
     setSortOption(e.target.value);
   };
 
-  if (loading) return <div>Chargement des jeux...</div>; // Indicateur de chargement
+  const handleShowMoreGames = () => {
+    setVisibleCount(prevCount => prevCount + 9);
+  };
+
+  if (loading) return <div>Chargement des jeux...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
@@ -70,14 +67,15 @@ const App = () => {
         <option value="release">Trier par Date de Sortie</option>
       </select>
       <div className="game-list">
-        {filteredGames.length > 0 ? (
-          filteredGames.map(game => (
-            <GameCard key={game.id} game={game} />
-          ))
-        ) : (
-          <p>Aucun jeu trouvé.</p>
-        )}
+        {filteredGames.slice(0, visibleCount).map(game => (
+          <GameCard key={game.id} game={game} />
+        ))}
       </div>
+      {filteredGames.length > visibleCount && (
+        <button onClick={handleShowMoreGames} className="show-more">
+          Show More
+        </button>
+      )}
     </div>
   );
 };

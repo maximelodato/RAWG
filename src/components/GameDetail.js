@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import '/src/styles/GameDetail.scss';
 
 const GameDetail = () => {
     const { slug } = useParams();
@@ -28,9 +29,13 @@ const GameDetail = () => {
     return (
         <div>
             <h1>{gameData.name}</h1>
-            <img src={gameData.background_image} alt={gameData.name} />
+            <img src={gameData.background_image} alt={gameData.name} style={{ width: '100%', height: 'auto' }} />
             <p>{gameData.description_raw}</p>
-            {/* Affiche d'autres informations sur le jeu */}
+            <p>Released: {gameData.released}</p>
+            <p>Genres: {gameData.genres.map(genre => genre.name).join(', ')}</p>
+            <p>Platforms: {gameData.platforms.map(platform => platform.platform.name).join(', ')}</p>
+            <p>Developers: {gameData.developers.map(dev => dev.name).join(', ')}</p>
+            {/* Et ainsi de suite pour d'autres informations */}
         </div>
     );
 };

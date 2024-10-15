@@ -9,20 +9,19 @@ const PageList = () => {
     const [query, setQuery] = useState('');
     const [platform, setPlatform] = useState('');
     const [page, setPage] = useState(1);
-    const [totalGamesLoaded, setTotalGamesLoaded] = useState(0); // Compte total de jeux chargés
-    const MAX_GAMES_DISPLAYED = 27; // Limite de 27 jeux
-    const GAMES_PER_PAGE = 9; // 9 jeux par page
+    const [totalGamesLoaded, setTotalGamesLoaded] = useState(0);
+    const MAX_GAMES_DISPLAYED = 27;
 
     useEffect(() => {
         const getGames = async () => {
-            if (totalGamesLoaded >= MAX_GAMES_DISPLAYED) return; // Arrête de charger si 27 jeux ont été atteints
+            if (totalGamesLoaded >= MAX_GAMES_DISPLAYED) return;
 
             try {
                 const gameData = await fetchGames(query, platform, page);
-                const newGames = gameData.results.slice(0, MAX_GAMES_DISPLAYED - totalGamesLoaded); // Limite les jeux chargés pour ne pas dépasser 27
+                const newGames = gameData.results.slice(0, MAX_GAMES_DISPLAYED - totalGamesLoaded);
 
                 setGames(prevGames => [...prevGames, ...newGames]);
-                setTotalGamesLoaded(prevCount => prevCount + newGames.length); // Mets à jour le nombre total de jeux chargés
+                setTotalGamesLoaded(prevCount => prevCount + newGames.length);
             } catch (error) {
                 console.error('Erreur lors de la récupération des jeux :', error);
             }
@@ -33,38 +32,37 @@ const PageList = () => {
 
     const handleSearch = (searchQuery) => {
         setQuery(searchQuery);
-        setPage(1);  // Réinitialise à la première page
-        setGames([]); // Réinitialise la liste des jeux
-        setTotalGamesLoaded(0); // Réinitialise le compte total des jeux chargés
+        setPage(1);
+        setGames([]);
+        setTotalGamesLoaded(0);
     };
 
     const handlePlatformChange = (platformId) => {
         setPlatform(platformId);
-        setPage(1); // Réinitialise à la première page
-        setGames([]); // Réinitialise la liste des jeux
-        setTotalGamesLoaded(0); // Réinitialise le compte total des jeux chargés
+        setPage(1);
+        setGames([]);
+        setTotalGamesLoaded(0);
     };
 
     const handleShowMore = () => {
-        setPage(prevPage => prevPage + 1); // Charge la page suivante
+        setPage(prevPage => prevPage + 1);
     };
 
     return (
-        <div>
-            <SearchBar onSearch={handleSearch} />
-            <PlatformFilter onChange={handlePlatformChange} />
-
-            <div className="game-list">
-                {games.map(game => (
-                    <GameCard key={game.id} game={game} />
-                ))}
+        <div className="game-list">
+            {games.map(game => (
+                <div className="game-card" key={game.id}>
+                    <img className="game-image" src={game.background_image} alt={game.name} />
+                    <div className="game-details">
+                        <h3 className="game-title">{game.name}</h3>
+                        <p className="game-platform">Platforms: {game.platforms.join(', ')}</p>
+                        <p className="game-rating">Rating: {game.rating}</p>
+                    </div>
+                </div>
+            ))}
+            <div className="show-more">
+                <button>Load More</button>
             </div>
-
-            {totalGamesLoaded < MAX_GAMES_DISPLAYED && (
-                <button onClick={handleShowMore}>
-                    Show more
-                </button>
-            )}
         </div>
     );
 };

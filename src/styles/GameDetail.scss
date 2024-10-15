@@ -1,0 +1,22 @@
+.game-detail {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background-color: #282c34;
+    color: #fff;
+    border-radius: 8px;
+}
+
+.game-detail h1 {
+    color: #61dafb; /* React blue */
+}
+
+.game-detail img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.game-detail p {
+    line-height: 1.5;
+}
