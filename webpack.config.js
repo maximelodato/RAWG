@@ -11,18 +11,26 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.jsx?$/,
+                test: /\.jsx?$/,  // Pour traiter les fichiers JS/JSX
                 exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader',
                 },
             },
             {
-                test: /\.scss$/,
-                use: [
-                    'style-loader',
-                    'css-loader',
-                    'sass-loader',
+                test: /\.scss$/,  // Pour traiter les fichiers SCSS
+                use: ['style-loader', 'css-loader', 'sass-loader'],
+            },
+            {
+                test: /\.svg$/,  // Pour traiter les fichiers SVG
+                oneOf: [
+                    {
+                        issuer: /\.[jt]sx?$/,  // Si tu veux les utiliser comme composants React
+                        use: ['@svgr/webpack'],
+                    },
+                    {
+                        type: 'asset/resource',  // Pour les utiliser comme fichiers statiques
+                    },
                 ],
             },
         ],
@@ -43,6 +51,6 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, 'src', 'index.html'),
         }),
-        new Dotenv(), // Ajoute cette ligne
+        new Dotenv(),
     ],
 };
