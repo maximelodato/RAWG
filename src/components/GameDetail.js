@@ -3,6 +3,8 @@ import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/GameDetail.scss';
 
+const API_KEY = process.env.REACT_APP_RAWG_API_KEY; // Utilisation de la variable d'environnement
+
 const GameDetail = () => {
     const { slug } = useParams();
     const history = useHistory();
@@ -16,7 +18,7 @@ const GameDetail = () => {
         const fetchGameData = async () => {
             try {
                 const response = await axios.get(
-                    `https://api.rawg.io/api/games/${slug}?key=04028b9c425643dc8845ff51f8d58b36`
+                    `https://api.rawg.io/api/games/${slug}?key=${API_KEY}`
                 );
                 setGameData(response.data);
             } catch (error) {
@@ -35,7 +37,7 @@ const GameDetail = () => {
         setLoading(true);
         try {
             const response = await axios.get(
-                `https://api.rawg.io/api/games?key=04028b9c425643dc8845ff51f8d58b36&search=${searchQuery}`
+                `https://api.rawg.io/api/games?key=${API_KEY}&search=${searchQuery}`
             );
             setSearchResults(response.data.results);
         } catch (error) {
