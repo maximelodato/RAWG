@@ -13,15 +13,14 @@ const HomePage = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [visibleGamesCount, setVisibleGamesCount] = useState(9); // Nombre initial de jeux visibles
     const [page, setPage] = useState(1);
+    const [showPopup, setShowPopup] = useState(false); // État pour gérer l'affichage de la popup
 
     const history = useHistory();
     const MAX_GAMES = 27; // Limite de jeux affichés
 
     useEffect(() => {
-        if (searchQuery.length === 0) {
-            fetchGames(); // Charger les jeux initiaux si la barre de recherche est vide
-        }
-    }, [page]);
+        fetchGames(); // Charger les jeux initiaux au montage et lorsque la page ou le terme de recherche change
+    }, [page, searchQuery]);
 
     const fetchGames = async () => {
         if (games.length >= MAX_GAMES) return; // Arrêter si on a déjà le nombre maximum de jeux
@@ -29,8 +28,9 @@ const HomePage = () => {
         setLoading(true);
         try {
             const today = new Date().toISOString().split('T')[0]; // Obtenir la date actuelle au format AAAA-MM-JJ
+            const searchParam = searchQuery ? `&search=${searchQuery}` : ''; // Ajouter le terme de recherche s'il existe
             const response = await axios.get(
-                `https://api.rawg.io/api/games?key=${API_KEY}&dates=2024-01-01,2026-01-01&page=${page}`
+                `https://api.rawg.io/api/games?key=${API_KEY}&dates=2024-01-01,2026-01-01&page=${page}${searchParam}`
             );
             const newGames = response.data.results;
 
@@ -50,12 +50,12 @@ const HomePage = () => {
     const handleSearchSubmit = (event) => {
         event.preventDefault();
         if (searchQuery.length === 0) {
-            setError('Please enter a search term.');
+            setShowPopup(true); // Afficher la popup si la barre de recherche est vide
             return;
         }
         setGames([]); // Réinitialiser les jeux avant de lancer une nouvelle recherche
         setPage(1); // Réinitialiser la pagination
-        fetchGames();
+        fetchGames(); // Effectuer la recherche
     };
 
     const handleSearchChange = (event) => {
@@ -68,14 +68,6 @@ const HomePage = () => {
         setVisibleGamesCount(9); // Réinitialiser le nombre de jeux visibles à 9
     };
 
-    const filteredGames = platformFilter === 'any'
-        ? games
-        : games.filter(game =>
-            game.platforms && game.platforms.some(platform =>
-                platform.platform.name.toLowerCase().includes(platformFilter)
-            )
-        );
-
     const loadMoreGames = () => {
         setVisibleGamesCount(prevCount => Math.min(prevCount + 9, MAX_GAMES));
         if (visibleGamesCount >= games.length && games.length < MAX_GAMES) {
@@ -87,7 +79,20 @@ const HomePage = () => {
         history.push(`/game/${slug}`);
     };
 
+    const closePopup = () => {
+        setShowPopup(false); // Fermer la popup
+    };
+
     const allowedPlatforms = ['PlayStation 4', 'Xbox One', 'PC', 'Nintendo Switch'];
+
+    // Définir filteredGames ici
+    const filteredGames = platformFilter === 'any'
+        ? games
+        : games.filter(game =>
+            game.platforms && game.platforms.some(platform =>
+                platform.platform.name.toLowerCase().includes(platformFilter)
+            )
+        );
 
     if (loading && games.length === 0) return <div className="loading">Loading...</div>;
     if (error) return <div className="error">{error}</div>;
@@ -96,7 +101,7 @@ const HomePage = () => {
         <div className="home-page">
             <header className="header">
                 <h1>The Hyper Progame</h1>
-                <p>Welcome,</p>
+                <p className="welcome-text">Welcome</p>
                 <p>
                     The Hyper Progame is the world’s premier event for computer and video games and
                     related products. At The Hyper Progame, the video game industry’s top talent pack
@@ -126,6 +131,15 @@ const HomePage = () => {
                     <button type="submit">Search</button>
                 </form>
             </header>
+
+            {showPopup && (
+                <div className="popup">
+                    <div className="popup-content">
+                        <p>Tabasse ton clavier FDP !🤦‍♂️🤷‍♂️.</p>
+                        <button onClick={closePopup}>Close</button>
+                    </div>
+                </div>
+            )}
 
             <section className="game-list">
                 {filteredGames.slice(0, visibleGamesCount).map(game => (

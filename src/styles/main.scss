@@ -11,10 +11,11 @@ $hover-shadow: rgba(0, 0, 0, 0.5);
 body {
     background: linear-gradient(145deg, #141414, #1f1f1f);
     color: $text-color;
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
     line-height: 1.6;
+    overflow-x: hidden;
 }
 
 .home-page {
@@ -23,36 +24,57 @@ body {
 
     .header {
         margin-bottom: 40px;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: $border-radius;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 
         h1 {
-            font-size: 3.5rem;
+            font-size: 4rem;
             color: $primary-color;
             margin-bottom: 15px;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             animation: fadeIn 1s ease-in-out;
+            text-align: left; // Aligner le texte à gauche
+            margin-top: 10px; // Supprimer toute marge supérieure pour le placer en haut
+        }
+
+        .welcome-text {
+            text-align: left; // Aligner le texte à gauche
+            margin: 0; // Supprimer complètement la marge
+            font-size: 2.5rem; // Taille plus grande pour le texte
+            font-weight: bold; // Optionnel : rendre le texte plus gras
         }
 
         p {
-            max-width: 800px;
-            margin: 0 auto 30px;
+            max-width: 100%; // Utiliser toute la largeur disponible
+            margin: 0 0 0 0; // Coller le texte à .welcome-text
             line-height: 1.5;
-            font-size: 1.1rem;
-            color: lighten($text-color, 15%);
+            font-size: 1.2rem;
+            color: lighten($text-color, 20%);
             animation: fadeIn 1s ease-in-out;
+            text-align: left; // Aligner le texte à gauche
+            height: auto; // Supprimer les contraintes pour s'adapter au texte
+            overflow: visible; // Afficher le texte complet
         }
 
         .filter {
             margin: 20px 0;
+            display: flex;
+            justify-content: flex-start; // Aligner les éléments à gauche
+            align-items: center;
+            gap: 10px;
 
             label {
                 margin-right: 10px;
                 font-weight: bold;
+                font-size: 1.1rem;
             }
 
             select {
                 background-color: $primary-color;
                 color: $text-color;
-                padding: 10px 20px;
+                padding: 12px 25px;
                 border: none;
                 border-radius: $border-radius;
                 font-size: 1rem;
@@ -68,13 +90,16 @@ body {
 
         .search-bar {
             display: flex;
-            justify-content: center;
-            margin-top: 20px;
+            justify-content: flex-end; // Aligner la barre de recherche à droite
+            position: absolute; // Utiliser un positionnement absolu
+            top: 65px; // Positionner la barre de recherche en haut
+            right: 20px; // Positionner la barre de recherche à droite
+            width: auto; // Ajuster la largeur pour s'adapter au contenu
 
             input {
-                padding: 12px;
-                width: 300px;
-                border-radius: 8px 0 0 8px;
+                padding: 15px;
+                width: 350px;
+                border-radius: $border-radius 0 0 $border-radius;
                 border: none;
                 background-color: #292929;
                 color: $text-color;
@@ -83,20 +108,22 @@ body {
                 transition: box-shadow 0.3s;
 
                 &:focus {
-                    box-shadow: 0 0 10px $primary-color;
+                    box-shadow: 0 0 15px $primary-color;
                 }
             }
+        
 
+        
             button {
-                padding: 12px 20px;
+                padding: 15px px;
                 background-color: $primary-color;
                 color: $text-color;
                 border: none;
-                border-radius: 0 8px 8px 0;
+                border-radius: 0 $border-radius $border-radius 0;
                 cursor: pointer;
                 font-size: 1rem;
                 transition: background-color 0.3s, transform 0.3s;
-
+        
                 &:hover {
                     background-color: darken($primary-color, 10%);
                     transform: scale(1.05);
@@ -104,23 +131,24 @@ body {
             }
         }
     }
+        
 
     .game-list {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 30px;
         padding: 40px 0;
-        max-width: 1200px;
-        margin: 0 auto;
-
+        max-width: 100%; // Étendre la largeur maximale pour utiliser toute la page
+        margin: 0 20px;  // Ajouter des marges latérales pour un léger espacement
+    
         @media (max-width: 1024px) {
             grid-template-columns: repeat(2, 1fr);
         }
-
+    
         @media (max-width: 768px) {
             grid-template-columns: 1fr;
         }
-
+    
         .game-card {
             background-color: $card-background;
             color: $text-color;
@@ -128,53 +156,54 @@ body {
             overflow: hidden;
             transition: transform 0.3s, box-shadow 0.3s;
             cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             position: relative;
             animation: fadeIn 0.5s ease-in-out;
-
+    
             &:hover {
                 transform: scale(1.05);
                 box-shadow: 0 8px 16px $hover-shadow;
             }
-
+    
             .game-image {
                 width: 100%;
-                height: 200px;
+                height: 220px;
                 object-fit: cover;
                 transition: transform 0.3s;
-
+    
                 &:hover {
                     transform: scale(1.1);
                 }
             }
-
+    
             h3 {
-                font-size: 1.3rem;
+                font-size: 1.4rem;
                 margin: 15px 0;
                 color: $primary-color;
                 text-transform: uppercase;
-                letter-spacing: 1px;
+                letter-spacing: 1.5px;
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
             }
-
+    
             .platform-icons {
                 display: flex;
                 justify-content: center;
-                gap: 10px;
+                gap: 0px;
                 margin-bottom: 10px;
-
+    
                 span {
                     background-color: #444;
                     color: $secondary-text-color;
-                    padding: 5px 10px;
+                    padding: 8px 12px;
                     border-radius: 5px;
-                    font-size: 0.8rem;
+                    font-size: 0.85rem;
                 }
             }
         }
     }
 
     .load-more {
-        margin-top: 30px;
+        margin-top: 40px;
 
         button {
             background-color: $primary-color;
@@ -184,7 +213,7 @@ body {
             border-radius: $border-radius;
             cursor: pointer;
             text-transform: uppercase;
-            font-size: 1rem;
+            font-size: 1.1rem;
             transition: background-color 0.3s, transform 0.3s;
 
             &:hover {
@@ -198,11 +227,12 @@ body {
 footer {
     background-color: darken($background-color, 10%);
     color: $secondary-text-color;
-    padding: 20px 0;
-    font-size: 0.9rem;
+    padding: 30px 0;
+    font-size: 1rem;
     text-align: center;
     margin-top: 40px;
     animation: fadeIn 1s ease-in-out;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 // Animations
@@ -212,5 +242,82 @@ footer {
     }
     to {
         opacity: 1;
+    }
+}
+
+// Styles pour la popup
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.5s ease-in-out;
+
+    .popup-content {
+        background-color: $card-background;
+        color: $text-color;
+        padding: 30px;
+        border-radius: $border-radius;
+        width: 90%;
+        max-width: 500px;
+        text-align: center;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        position: relative;
+        animation: slideDown 0.5s ease-in-out;
+
+        p {
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        button {
+            background-color: $primary-color;
+            color: $text-color;
+            border: none;
+            padding: 15px 30px;
+            border-radius: $border-radius;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s, transform 0.3s;
+
+            &:hover {
+                background-color: darken($primary-color, 10%);
+                transform: scale(1.05);
+            }
+        }
+
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: transparent;
+            border: none;
+            color: $secondary-text-color;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+
+            &:hover {
+                color: $text-color;
+            }
+        }
+    }
+}
+
+// Animation pour la popup
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
