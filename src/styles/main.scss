@@ -1,55 +1,216 @@
-// Variables
+// Variables de couleurs
 $background-color: #1b1b1b;
-$text-color: #fff;
+$text-color: #ffffff;
 $primary-color: #e50914;
 $card-background: #333;
+$secondary-text-color: #aaa;
 $border-radius: 8px;
+$hover-shadow: rgba(0, 0, 0, 0.5);
 
-
+// Styles globaux
 body {
-    background-color: $background-color;
+    background: linear-gradient(145deg, #141414, #1f1f1f);
     color: $text-color;
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    line-height: 1.6;
 }
 
-header {
-    text-align: left;
+.home-page {
     padding: 20px;
+    text-align: center;
 
-    h1 {
-        font-size: 5rem;
-        color: $primary-color;
-        margin-bottom: 10px;
+    .header {
+        margin-bottom: 40px;
+
+        h1 {
+            font-size: 3.5rem;
+            color: $primary-color;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        p {
+            max-width: 800px;
+            margin: 0 auto 30px;
+            line-height: 1.5;
+            font-size: 1.1rem;
+            color: lighten($text-color, 15%);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .filter {
+            margin: 20px 0;
+
+            label {
+                margin-right: 10px;
+                font-weight: bold;
+            }
+
+            select {
+                background-color: $primary-color;
+                color: $text-color;
+                padding: 10px 20px;
+                border: none;
+                border-radius: $border-radius;
+                font-size: 1rem;
+                cursor: pointer;
+                transition: background-color 0.3s, transform 0.3s;
+
+                &:hover {
+                    background-color: darken($primary-color, 10%);
+                    transform: scale(1.05);
+                }
+            }
+        }
+
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+
+            input {
+                padding: 12px;
+                width: 300px;
+                border-radius: 8px 0 0 8px;
+                border: none;
+                background-color: #292929;
+                color: $text-color;
+                font-size: 1rem;
+                outline: none;
+                transition: box-shadow 0.3s;
+
+                &:focus {
+                    box-shadow: 0 0 10px $primary-color;
+                }
+            }
+
+            button {
+                padding: 12px 20px;
+                background-color: $primary-color;
+                color: $text-color;
+                border: none;
+                border-radius: 0 8px 8px 0;
+                cursor: pointer;
+                font-size: 1rem;
+                transition: background-color 0.3s, transform 0.3s;
+
+                &:hover {
+                    background-color: darken($primary-color, 10%);
+                    transform: scale(1.05);
+                }
+            }
+        }
     }
 
-    p {
-        max-width: 1000px;
+    .game-list {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        padding: 40px 0;
+        max-width: 1200px;
         margin: 0 auto;
-        line-height: 1.5;
+
+        @media (max-width: 1024px) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @media (max-width: 768px) {
+            grid-template-columns: 1fr;
+        }
+
+        .game-card {
+            background-color: $card-background;
+            color: $text-color;
+            border-radius: $border-radius;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            animation: fadeIn 0.5s ease-in-out;
+
+            &:hover {
+                transform: scale(1.05);
+                box-shadow: 0 8px 16px $hover-shadow;
+            }
+
+            .game-image {
+                width: 100%;
+                height: 200px;
+                object-fit: cover;
+                transition: transform 0.3s;
+
+                &:hover {
+                    transform: scale(1.1);
+                }
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 15px 0;
+                color: $primary-color;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+
+            .platform-icons {
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+                margin-bottom: 10px;
+
+                span {
+                    background-color: #444;
+                    color: $secondary-text-color;
+                    padding: 5px 10px;
+                    border-radius: 5px;
+                    font-size: 0.8rem;
+                }
+            }
+        }
     }
 
-    #search-bar {
-        margin-top: 20px;
-        padding: 10px;
-        width: 300px;
-        border-radius: $border-radius;
-        border: none;
-        background: darken($card-background, 10%);
-        color: $text-color;
-        font-size: 1rem;
+    .load-more {
+        margin-top: 30px;
+
+        button {
+            background-color: $primary-color;
+            color: $text-color;
+            border: none;
+            padding: 15px 30px;
+            border-radius: $border-radius;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 1rem;
+            transition: background-color 0.3s, transform 0.3s;
+
+            &:hover {
+                background-color: darken($primary-color, 10%);
+                transform: scale(1.05);
+            }
+        }
     }
 }
-
 
 footer {
-    text-align: center;
-    padding: 10px 0;
     background-color: darken($background-color, 10%);
-    color: $text-color;
+    color: $secondary-text-color;
+    padding: 20px 0;
     font-size: 0.9rem;
-    position: relative;
-    bottom: 0;
-    width: 100%;
+    text-align: center;
+    margin-top: 40px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+// Animations
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }

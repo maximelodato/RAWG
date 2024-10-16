@@ -1,70 +1,47 @@
-import React, { useState, useEffect } from 'react';
-import { fetchGames } from '../utils/api';
-import GameCard from './GameCard';
-import SearchBar from './SearchBar';
-import PlatformFilter from './PlatformFilter';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { fetchGameDetails } from '../utils/api'; // Assure-toi que cette fonction est bien définie
+import '../styles/main.scss'; // Chemin relatif pour le fichier SCSS
 
-const PageList = () => {
-    const [games, setGames] = useState([]);
-    const [query, setQuery] = useState('');
-    const [platform, setPlatform] = useState('');
-    const [page, setPage] = useState(1);
-    const [totalGamesLoaded, setTotalGamesLoaded] = useState(0);
-    const MAX_GAMES_DISPLAYED = 27;
+const PageDetail = () => {
+    const { slug } = useParams();
+    const [game, setGame] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
 
     useEffect(() => {
-        const getGames = async () => {
-            if (totalGamesLoaded >= MAX_GAMES_DISPLAYED) return;
-
+        const loadGameDetails = async () => {
             try {
-                const gameData = await fetchGames(query, platform, page);
-                const newGames = gameData.results.slice(0, MAX_GAMES_DISPLAYED - totalGamesLoaded);
-
-                setGames(prevGames => [...prevGames, ...newGames]);
-                setTotalGamesLoaded(prevCount => prevCount + newGames.length);
-            } catch (error) {
-                console.error('Erreur lors de la récupération des jeux :', error);
+                const response = await fetchGameDetails(slug);
+                setGame(response);
+                setLoading(false);
+            } catch (err) {
+                setError('Failed to fetch game details.');
+                setLoading(false);
             }
         };
+        loadGameDetails();
+    }, [slug]);
 
-        getGames();
-    }, [query, platform, page, totalGamesLoaded]);
-
-    const handleSearch = (searchQuery) => {
-        setQuery(searchQuery);
-        setPage(1);
-        setGames([]);
-        setTotalGamesLoaded(0);
-    };
-
-    const handlePlatformChange = (platformId) => {
-        setPlatform(platformId);
-        setPage(1);
-        setGames([]);
-        setTotalGamesLoaded(0);
-    };
-
-    const handleShowMore = () => {
-        setPage(prevPage => prevPage + 1);
-    };
+    if (loading) return <div className="loading">Loading...</div>;
+    if (error) return <div className="error">Error: {error}</div>;
+    if (!game) return <div className="no-data">No game data available.</div>;
 
     return (
-        <div className="game-list">
-            {games.map(game => (
-                <div className="game-card" key={game.id}>
-                    <img className="game-image" src={game.background_image} alt={game.name} />
-                    <div className="game-details">
-                        <h3 className="game-title">{game.name}</h3>
-                        <p className="game-platform">Platforms: {game.platforms.join(', ')}</p>
-                        <p className="game-rating">Rating: {game.rating}</p>
-                    </div>
-                </div>
-            ))}
-            <div className="show-more">
-                <button>Load More</button>
+        <div className="game-detail">
+            <h1 className="game-title">{game.name}</h1>
+            {game.background_image && (
+                <img src={game.background_image} alt={game.name} className="game-image" />
+            )}
+            <div className="game-info">
+                <p className="game-description">{game.description || 'No description available.'}</p>
+                <p className="game-release-date">
+                    Date de sortie : {game.released ? new Date(game.released).toLocaleDateString() : 'Date non disponible'}
+                </p>
+                <p className="game-rating">Note : {game.rating ? game.rating : 'Pas de note disponible'}</p>
             </div>
         </div>
     );
 };
 
-export default PageList;
+export default PageDetail;

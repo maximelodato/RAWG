@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
-import '/src/styles/GameCard.scss';
+import { useNavigate } from 'react-router-dom';
+import '../styles/GameCard.scss';
 
 // Importation des logos SVG
 import PlayStationIcon from '../assets/icons/ps4.svg';
@@ -10,24 +10,28 @@ import PCIcon from '../assets/icons/windows.svg';
 import SwitchIcon from '../assets/icons/switch.svg';
 
 const GameCard = ({ game }) => {
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handleClick = () => {
         if (game && game.slug) {
-            history.push(`/game/${game.slug}`);
+            navigate(`/game/${game.slug}`);
         } else {
             console.error("Game object is undefined or doesn't have a slug");
         }
     };
 
-    // Icônes des plateformes
+    // Mappage des noms de plateformes aux icônes
     const platformIcons = {
-        PlayStation: PlayStationIcon,
-        Xbox: XboxIcon,
-        PC: PCIcon,
-        Switch: SwitchIcon,
-        // Ajouter d'autres plateformes si nécessaire
+        'PlayStation 4': PlayStationIcon,
+        'Xbox One': XboxIcon,
+        'PC': PCIcon,
+        'Nintendo Switch': SwitchIcon,
     };
+
+    // Filtrer les plateformes pour n'afficher que PS4, Xbox, Windows, Switch
+    const filteredPlatforms = game.platforms.filter(p => 
+        ['PlayStation 4', 'Xbox One', 'PC', 'Nintendo Switch'].includes(p.platform.name)
+    );
 
     return (
         <div 
@@ -44,14 +48,17 @@ const GameCard = ({ game }) => {
             <div className="game-info">
                 <h3>{game.name}</h3>
                 <div className="platform-icons">
-                    {game.platforms ? game.platforms.map((p, index) => (
-                        <img 
-                            key={index} 
-                            src={platformIcons[p.platform.name]} 
-                            alt={p.platform.name} 
-                            className="platform-icon"
-                        />
-                    )) : 'Aucune plateforme disponible'}
+                    {filteredPlatforms.length > 0 ? filteredPlatforms.map((p, index) => {
+                        const icon = platformIcons[p.platform.name];
+                        return icon ? (
+                            <img 
+                                key={index} 
+                                src={icon} 
+                                alt={p.platform.name} 
+                                className="platform-icon"
+                            />
+                        ) : null;
+                    }) : 'Aucune plateforme disponible'}
                 </div>
                 <div className="game-details">
                     <p>Date de sortie : {game.released ? new Date(game.released).toLocaleDateString() : 'Date non disponible'}</p>
@@ -70,7 +77,11 @@ GameCard.propTypes = {
         slug: PropTypes.string.isRequired,
         background_image: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
-        platforms: PropTypes.array,
+        platforms: PropTypes.arrayOf(PropTypes.shape({
+            platform: PropTypes.shape({
+                name: PropTypes.string.isRequired,
+            }).isRequired,
+        })),
         released: PropTypes.string,
         rating: PropTypes.number,
     }).isRequired,

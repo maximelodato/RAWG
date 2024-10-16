@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchGameDetails } from '../utils/api'; // Assure-toi que cette fonction est bien définie
-import './styles/PageDetail.scss';
+import '../src/styles/main.scss';
 
 
 const PageDetail = () => {
