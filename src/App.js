@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-import '../src/styles/main.scss'; // Corriger le chemin relatif
+import './styles/main.scss'; // Correction du chemin relatif
+
+const API_KEY = process.env.REACT_APP_RAWG_API_KEY; // Utilisation de la variable d'environnement
 
 const HomePage = () => {
     const [games, setGames] = useState([]);
@@ -26,8 +28,9 @@ const HomePage = () => {
 
         setLoading(true);
         try {
+            const today = new Date().toISOString().split('T')[0]; // Obtenir la date actuelle au format AAAA-MM-JJ
             const response = await axios.get(
-                `https://api.rawg.io/api/games?key=04028b9c425643dc8845ff51f8d58b36&page=${page}&page_size=20&search=${searchQuery}`
+                `https://api.rawg.io/api/games?key=${API_KEY}&dates=2024-01-01,2026-01-01&page=${page}`
             );
             const newGames = response.data.results;
 
@@ -36,9 +39,6 @@ const HomePage = () => {
                 return combinedGames.slice(0, MAX_GAMES);
             });
 
-            if (response.data.results.length < 20) {
-                setLoading(false);
-            }
         } catch (error) {
             console.error('Error fetching games:', error);
             setError('Failed to load games.');
